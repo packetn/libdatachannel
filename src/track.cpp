@@ -38,7 +38,9 @@ void Track::setDescription(Description::Media description) {
 
 void Track::close() { impl()->close(); }
 
-bool Track::send(message_variant data) { return impl()->outgoing(make_message(std::move(data))); }
+bool Track::send(rtc::message_ptr data) { return impl()->outgoing(data); }
+
+bool Track::send(message_variant data) { return send(make_message(std::move(data))); }
 
 bool Track::send(const byte *data, size_t size) { return send(binary(data, data + size)); }
 

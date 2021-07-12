@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>libdatachannel media example</title>
@@ -24,49 +25,100 @@
         #media {
             max-width: 1280px;
         }
+
+        #timedate {
+            background-color: #2d2d2d;
+            font: small-caps lighter 43px/150% "Segoe UI", Frutiger, "Frutiger Linotype", "Dejavu Sans", "Helvetica Neue", Arial, sans-serif;
+            text-align: left;
+            width: 50%;
+            margin: 40px auto;
+            color: #fff;
+            border-left: 3px solid #ed1f24;
+            padding: 20px;
+        }
     </style>
 </head>
+
 <body>
-<script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
+    <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
 
-<h2>Options</h2>
+    <h2>Options</h2>
 
-<div class="option">
-    <input id="use-stun" type="checkbox"/>
-    <label for="use-stun">Use STUN server</label>
-</div>
+    <div class="option">
+        <input id="use-stun" type="checkbox" />
+        <label for="use-stun">Use STUN server</label>
+    </div>
 
-<button id="start" onclick="start()" disabled>Start</button>
-<button id="stop" style="display: none" onclick="stop()">Stop</button>
+    <button id="start" onclick="start()" disabled>Start</button>
+    <button id="stop" style="display: none" onclick="stop()">Stop</button>
 
-<h2>State</h2>
-<p>
-    ICE gathering state: <span id="ice-gathering-state"></span>
-</p>
-<p>
-    ICE connection state: <span id="ice-connection-state"></span>
-</p>
-<p>
-    Signaling state: <span id="signaling-state"></span>
-</p>
+    <h2>State</h2>
+    <p>
+        ICE gathering state: <span id="ice-gathering-state"></span>
+    </p>
+    <p>
+        ICE connection state: <span id="ice-connection-state"></span>
+    </p>
+    <p>
+        Signaling state: <span id="signaling-state"></span>
+    </p>
 
-<div id="media" style="display: none">
-    <h2>Media</h2>
-    <video id="video" autoplay playsinline></video>
-</div>
+    <div id="timedate">
+        <a id="mon">January</a>
+        <a id="d">1</a>,
+        <a id="y">0</a><br />
+        <a id="h">12</a> :
+        <a id="m">00</a>:
+        <a id="s">00</a>:
+        <a id="mi">000</a>
+    </div>
 
-<h2>Data channel</h2>
-<pre id="data-channel" style="height: 200px;"></pre>
+    <div id="media" style="display: none">
+        <h2>Media</h2>
+        <video id="video" autoplay playsinline></video>
+    </div>
 
-<h2>SDP</h2>
+    <h2>Data channel</h2>
+    <pre id="data-channel" style="height: 200px;"></pre>
 
-<h3>Offer</h3>
-<pre id="offer-sdp"></pre>
+    <h2>SDP</h2>
 
-<h3>Answer</h3>
-<pre id="answer-sdp"></pre>
+    <h3>Offer</h3>
+    <pre id="offer-sdp"></pre>
 
-<script src="client.js"></script>
+    <h3>Answer</h3>
+    <pre id="answer-sdp"></pre>
 
+    <script src="client.js"></script>
+    <script>
+        Number.prototype.pad = function (n) {
+            for (var r = this.toString(); r.length < n; r = 0 + r);
+            return r;
+        };
+
+        function updateClock() {
+            var now = new Date();
+            var milli = now.getMilliseconds(),
+                sec = now.getSeconds(),
+                min = now.getMinutes(),
+                hou = now.getHours(),
+                mo = now.getMonth(),
+                dy = now.getDate(),
+                yr = now.getFullYear();
+            var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            var tags = ["mon", "d", "y", "h", "m", "s", "mi"],
+                corr = [months[mo], dy, yr, hou.pad(2), min.pad(2), sec.pad(2), milli];
+            for (var i = 0; i < tags.length; i++)
+                document.getElementById(tags[i]).firstChild.nodeValue = corr[i];
+        }
+
+        function initClock() {
+            updateClock();
+            window.setInterval("updateClock()", 1);
+        }
+
+        initClock();
+    </script>
 </body>
+
 </html>

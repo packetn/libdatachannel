@@ -63,12 +63,12 @@ void WebSocket::close() {
 	}
 }
 
-bool WebSocket::send(message_variant data) {
-	return impl()->outgoing(make_message(std::move(data)));
-}
+bool WebSocket::send(message_ptr data) { return impl()->outgoing(data); }
+
+bool WebSocket::send(message_variant data) { return send(make_message(std::move(data))); }
 
 bool WebSocket::send(const byte *data, size_t size) {
-	return impl()->outgoing(make_message(data, data + size));
+	return send(make_message(data, data + size));
 }
 
 optional<string> WebSocket::remoteAddress() const {

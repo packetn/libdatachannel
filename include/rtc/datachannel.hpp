@@ -29,7 +29,6 @@
 #include <functional>
 #include <shared_mutex>
 #include <type_traits>
-#include <shared_mutex>
 
 namespace rtc {
 
@@ -56,6 +55,7 @@ public:
 	size_t maxMessageSize() const override;
 
 	void close(void) override;
+	bool send(message_ptr data) override;
 	bool send(message_variant data) override;
 	bool send(const byte *data, size_t size) override;
 	template <typename Buffer> bool sendBuffer(const Buffer &buf);

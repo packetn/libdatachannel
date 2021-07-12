@@ -27,7 +27,7 @@ let dc = null, dcTimeout = null;
 function createPeerConnection() {
     const config = {
         sdpSemantics: 'unified-plan',
-        bundlePolicy: "max-bundle",
+        bundlePolicy: 'max-bundle',
     };
 
     if (document.getElementById('use-stun').checked) {
@@ -56,8 +56,10 @@ function createPeerConnection() {
     pc.addEventListener('track', function (evt) {
         document.getElementById('media').style.display = 'block';
         const videoTag = document.getElementById('video');
-        videoTag.srcObject = evt.streams[0];
-        videoTag.play();
+        if(videoTag.srcObject !== evt.streams[0]){
+            videoTag.srcObject = evt.streams[0];
+            videoTag.play();
+        }
     });
 
     let time_start = null;

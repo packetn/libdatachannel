@@ -36,6 +36,7 @@ public:
 	virtual ~Channel();
 
 	virtual void close() = 0;
+	virtual bool send(message_ptr data) = 0;
 	virtual bool send(message_variant data) = 0; // returns false if buffered
 	virtual bool send(const byte *data, size_t size) = 0;
 
@@ -58,7 +59,7 @@ public:
 	// Extended API
 	optional<message_variant> receive(); // only if onMessage unset
 	optional<message_variant> peek();    // only if onMessage unset
-	size_t availableAmount() const;           // total size available to receive
+	size_t availableAmount() const;      // total size available to receive
 	void onAvailable(std::function<void()> callback);
 
 protected:
